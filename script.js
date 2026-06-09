@@ -325,73 +325,98 @@ function initQuiz() {
     const questions = [
 
         {
-            question:
-                "Qual tecnologia monitora plantações pelo céu?",
-
-            options: [
-                "Trator",
-                "Drone",
-                "Enxada",
-                "Caminhão"
-            ],
-
+            question: "Qual tecnologia monitora plantações pelo ar, detectando pragas e doenças?",
+            options: ["Trator Autônomo", "Drone Agrícola", "Sensor de Solo", "Satélite Geoestacionário"],
             answer: 1
         },
 
         {
-            question:
-                "Qual tecnologia utiliza aprendizado de máquina?",
-
+            question: "O que é 'agricultura de precisão'?",
             options: [
-                "IA",
-                "Arado",
-                "Irrigação",
-                "Semente"
+                "Plantar com sementes selecionadas manualmente",
+                "Aplicar insumos de forma diferenciada conforme a necessidade de cada área",
+                "Usar apenas fertilizantes orgânicos",
+                "Irrigar toda a lavoura ao mesmo tempo"
             ],
-
-            answer: 0
+            answer: 1
         },
 
         {
-            question:
-                "O que sensores inteligentes monitoram?",
-
-            options: [
-                "Solo e clima",
-                "Somente máquinas",
-                "Estradas",
-                "Veículos"
-            ],
-
-            answer: 0
+            question: "Qual tecnologia permite que um trator opere sem motorista?",
+            options: ["Bluetooth agrícola", "GPS de alta precisão e sensores de obstáculos", "Rádio frequência", "Câmera térmica"],
+            answer: 1
         },
 
         {
-            question:
-                "Qual tecnologia pode operar sem motorista?",
-
+            question: "O que os sensores inteligentes no solo são capazes de medir?",
             options: [
-                "Trator Autônomo",
-                "Pulverizador Manual",
-                "Enxada",
-                "Carrinho"
+                "Velocidade do vento apenas",
+                "Umidade, temperatura, pH e nutrientes do solo",
+                "Quantidade de chuva do mês anterior",
+                "Peso das colheitas"
             ],
-
-            answer: 0
+            answer: 1
         },
 
         {
-            question:
-                "Qual benefício está ligado ao AgroTech?",
-
+            question: "O que significa 'Agricultura 4.0'?",
             options: [
-                "Maior desperdício",
-                "Menor produtividade",
-                "Sustentabilidade",
-                "Poluição"
+                "Uso de quatro tipos de adubo diferentes",
+                "A quarta geração de tratores a combustão",
+                "Integração de IoT, big data, drones e IA na produção agrícola",
+                "Plantio feito em quatro estações do ano"
             ],
-
             answer: 2
+        },
+
+        {
+            question: "Para que servem as imagens de satélite na agricultura?",
+            options: [
+                "Apenas para prever chuvas",
+                "Monitorar grandes áreas, acompanhar culturas e identificar variações no solo",
+                "Controlar pragas urbanas",
+                "Substituir o trabalho dos drones"
+            ],
+            answer: 1
+        },
+
+        {
+            question: "Como a Inteligência Artificial ajuda na agricultura?",
+            options: [
+                "Substituindo completamente o agricultor",
+                "Analisando dados para prever colheitas, identificar doenças e sugerir irrigação",
+                "Fabricando sementes geneticamente modificadas",
+                "Controlando o clima local"
+            ],
+            answer: 1
+        },
+
+        {
+            question: "Qual é uma vantagem dos robôs de colheita em culturas como morango e uva?",
+            options: [
+                "São mais baratos que qualquer outra máquina",
+                "Identificam e colhem frutos no ponto certo de maturação com precisão",
+                "Eliminam totalmente o uso de água",
+                "Produzem energia solar durante a colheita"
+            ],
+            answer: 1
+        },
+
+        {
+            question: "Qual organização internacional é referência em segurança alimentar e tecnologia agrícola global?",
+            options: ["NASA", "OMS", "FAO — ONU", "OTAN"],
+            answer: 2
+        },
+
+        {
+            question: "Qual é o principal objetivo do AgroTech?",
+            options: [
+                "Substituir toda mão de obra rural por robôs",
+                "Produzir mais alimentos com menos recursos e menor impacto ambiental",
+                "Eliminar o uso de máquinas agrícolas tradicionais",
+                "Exportar tecnologia brasileira para outros países"
+            ],
+            answer: 1
         }
 
     ];
@@ -411,6 +436,9 @@ function initQuiz() {
     let score = 0;
     let selected = null;
 
+    // Armazena as respostas do usuário
+    const userAnswers = [];
+
     renderQuestion();
 
     function renderQuestion() {
@@ -419,6 +447,13 @@ function initQuiz() {
             questions[currentQuestion];
 
         quizBox.innerHTML = `
+
+            <div class="quiz-progress">
+                <span>Pergunta ${currentQuestion + 1} de ${questions.length}</span>
+                <div class="quiz-progress-bar">
+                    <div class="quiz-progress-fill" style="width: ${((currentQuestion) / questions.length) * 100}%"></div>
+                </div>
+            </div>
 
             <h3>${q.question}</h3>
 
@@ -445,12 +480,15 @@ function initQuiz() {
 
                     document
                         .querySelectorAll(".option")
-                        .forEach(o =>
-                            o.style.background = ""
-                        );
+                        .forEach(o => {
+                            o.style.background = "";
+                            o.classList.remove("selected");
+                        });
 
                     option.style.background =
                         "#22C55E";
+
+                    option.classList.add("selected");
 
                     selected =
                         Number(option.dataset.index);
@@ -471,6 +509,9 @@ function initQuiz() {
 
             return;
         }
+
+        // Salva a resposta do usuário
+        userAnswers.push(selected);
 
         if (
             selected ===
@@ -501,37 +542,108 @@ function initQuiz() {
     function finishQuiz() {
 
         quizBox.style.display = "none";
-
         nextBtn.style.display = "none";
 
         let message = "";
+        let messageIcon = "";
 
-        if (score <= 2) {
+        if (score <= 4) {
 
-            message =
-                "🌱 Continue aprendendo sobre o AgroTech.";
+            messageIcon = "🌱";
+            message = "Continue aprendendo sobre o AgroTech.";
 
-        } else if (score <= 4) {
+        } else if (score <= 7) {
 
-            message =
-                "🚜 Ótimo conhecimento sobre inovação agrícola!";
+            messageIcon = "🚜";
+            message = "Ótimo conhecimento sobre inovação agrícola!";
 
         } else {
 
-            message =
-                "🏆 Você é um especialista do AgroTech!";
+            messageIcon = "🏆";
+            message = "Você é um especialista do AgroTech!";
 
         }
 
+        // Monta o gabarito detalhado
+        const reviewHTML = questions.map((q, i) => {
+
+            const userChoice = userAnswers[i];
+            const correctChoice = q.answer;
+            const isCorrect = userChoice === correctChoice;
+
+            const optionsHTML = q.options.map((opt, idx) => {
+
+                let optClass = "review-option";
+                let icon = "";
+
+                if (idx === correctChoice) {
+                    optClass += " review-correct";
+                    icon = '<span class="review-icon">✓</span>';
+                }
+
+                if (idx === userChoice && !isCorrect) {
+                    optClass += " review-wrong";
+                    icon = '<span class="review-icon">✗</span>';
+                }
+
+                return `<div class="${optClass}">${icon}${opt}</div>`;
+
+            }).join("");
+
+            return `
+                <div class="review-card ${isCorrect ? 'review-card-correct' : 'review-card-wrong'}">
+                    <div class="review-card-header">
+                        <span class="review-badge ${isCorrect ? 'badge-correct' : 'badge-wrong'}">
+                            ${isCorrect ? '✓ Acertou' : '✗ Errou'}
+                        </span>
+                        <span class="review-num">Questão ${i + 1}</span>
+                    </div>
+                    <p class="review-question">${q.question}</p>
+                    <div class="review-options">${optionsHTML}</div>
+                </div>
+            `;
+
+        }).join("");
+
         result.innerHTML = `
 
-            <h2>Resultado Final</h2>
+            <div class="result-header">
+                <div class="result-icon">${messageIcon}</div>
+                <h2>Resultado Final</h2>
+                <div class="result-score">
+                    <span class="score-num">${score}</span>
+                    <span class="score-sep">/</span>
+                    <span class="score-total">${questions.length}</span>
+                </div>
+                <p class="result-message">${message}</p>
+            </div>
 
-            <h3>${score} / ${questions.length}</h3>
+            <div class="review-section">
+                <h3 class="review-title">📋 Gabarito Detalhado</h3>
+                <div class="review-list">${reviewHTML}</div>
+            </div>
 
-            <p>${message}</p>
+            <button id="restartQuiz" class="restart-btn">
+                <i class="fas fa-redo"></i> Tentar Novamente
+            </button>
 
         `;
+
+        // Botão de reiniciar
+        document.getElementById("restartQuiz").addEventListener("click", () => {
+
+            currentQuestion = 0;
+            score = 0;
+            selected = null;
+            userAnswers.length = 0;
+
+            result.innerHTML = "";
+            quizBox.style.display = "block";
+            nextBtn.style.display = "inline-block";
+
+            renderQuestion();
+
+        });
 
     }
 
