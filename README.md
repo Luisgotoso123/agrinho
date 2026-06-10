@@ -34,7 +34,7 @@ Mostra a evolução da agricultura:
 
 | Período | Evolução |
 | --------- | ----------------------- |
-| 1900 | Agricultura tradicional |
+|  1900 | Agricultura tradicional |
 | 1900–1960 | Mecanização |
 | 1960–2000 | Agricultura de precisão |
 | 2000–2020 | Agricultura 4.0 |
